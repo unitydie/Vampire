@@ -1,193 +1,94 @@
-# Vampire
-1. Prosjekttittel
-
+Prosjekttittel:
 «Online Survivors» (arbeidstittel)
 
-2. Idé
+Idé:
+Et lite arkadespill der spillerne prøver å overleve bølger av monstre. Fokus er på:
 
-Et lite kooperativt arkadespill der flere spillere sammen prøver å overleve endeløse bølger av monstre.
-Fokuset er på:
+Enkelt og intuitivt kontrolloppsett
 
-enkelt og intuitivt kontrolloppsett
+Automatiske angrep fra figuren
 
-automatiske angrep fra figuren
+Følelsen av kaos og fremgang når figuren blir sterkere over tid
 
-følelsen av kaos og at figuren blir sterkere over tid
+Målet er å ha en fungerende prototype.
 
-mulighet til å spille med venner over nett
-
-Målet er ikke å lage et kjempestort spill, men et lite, fungerende prototype-spill med flerspiller.
-
-3. Konsept
+Konsept:
 
 Sjanger: arkade-action / roguelite med top-down-perspektiv
 
-Plattform: PC (Windows), eventuell Android hvis det blir tid
+Plattform: PC (Windows)
 
-Kamera: ovenfra, litt på skrå, likt som i spill av typen Vampire Survivors
+Kamera: ovenfra, litt på skrå
 
-Spillerne befinner seg på en arena der fiender hele tiden dukker opp.
-Når fiender dør får man erfaring og går opp i nivå, og kan velge oppgraderinger.
-Målet er å overleve så lenge som mulig. Når en spiller dør, sendes han/hun tilbake til lobbyen.
+Spillerne befinner seg på en arena hvor fiender hele tiden dukker opp. Når fiender dør, får man erfaringskrystaller som fyller opp erfaringsbaren. Målet er å overleve så lenge som mulig. Når en spiller dør, sendes han/hun tilbake til lobbyen.
 
-4. Verktøy og teknologi
+Verktøy og teknologi:
 
 Spillmotor: Unity
 
 Programmeringsspråk: C#
 
-Nettverksbibliotek: Photon Fusion (til lobbyer, rom og synkronisering av spillere/fiender)
+Arkitektur: ECS (Entity Component System) for å håndtere mange objekter
 
-Arkitektur: ECS (Entity Component System) for å håndtere mange objekter (spillere, fiender, prosjektiler) og for bedre ytelse
+Nettverk: Photon Fusion (planlagt for fremtidig flerspiller)
 
-UI og kontroller: Unity UI + virtuell joystick (f.eks. Simple Input) eller tastatur (WASD)
+UI og kontroller: Unity UI + tastatur (WASD) eller virtuell joystick
 
-Versjonskontroll (valgfritt): Git / GitHub
+Grafikk: enkle 2D-spriter eller low-poly 3D-modeller
 
-Grafikk: enkle 2D-spriter eller low-poly 3D-modeller / ikoner
+Ferdige kjerne-mekanikker:
 
-5. Design og kjerne-mekanikker
-5.1 Spillfiguren
+Spillfiguren:
 
-Spilleren styrer figuren med joystick (mobil) eller tastatur (PC):
+Bevegelse med tastatur eller joystick
 
-figuren beveger seg fritt rundt på arenaen
+Automatisk angrep når fiende er i rekkevidde
 
-når en fiende kommer innenfor angrepsradius, angriper figuren automatisk den nærmeste fienden
+HP og erfaringsbar vises i UI
 
-fra døde fiender faller det:
+Figuren kan dø
 
-erfaringskrystaller – fyller opp erfaringsbaren
+Fiender:
 
-helsedrikker – gjenoppretter HP
+Spawner rundt spilleren, men ikke rett på ham/henne
 
-Når nok erfaring er samlet, går figuren opp et nivå.
+Beveger seg mot nærmeste spiller
 
-5.2 Nivåsystem og oppgraderinger
+Angriper spilleren til enten fienden eller spilleren dør
 
-Når man går opp et nivå, vises et oppgraderingsmeny øverst på skjermen (uten å sette spillet på pause).
-Spilleren velger én av flere oppgraderinger, for eksempel:
+ECS / DOTS-systemer:
 
-økt angrepshastighet
+Kamp mellom spillere og fiender
 
-økt skade
+Opptjening av erfaringskrystaller
 
-mer maks-HP
+Død av spiller og fiender
 
-raskere bevegelse
+Spawning av fiender
 
-Slik bygges følelsen av at figuren blir sterkere jo lengre man overlever.
+UI:
 
-5.3 Brukergrensesnitt
+HP-bar som minker når spilleren tar skade
 
-På skjermen ser spilleren:
+Erfaringsbar som fylles når krystaller samles inn
 
-HP-bar øverst på skjermen – minker når spilleren tar skade
+Visuell stil:
 
-erfaringsbar ved siden av HP-baren, samme stil men annen farge
+Enkel og oversiktlig for å skille spillere, fiender og dropp
 
-eventuelt en timer eller hvilken bølge man er på
+Kan være 2D top-down-spriter eller enkel 3D
 
-For andre spillere vises:
-
-posisjonen deres på kartet
-
-angrep/prosjektiler de skyter
-
-små HP-barer over figurene deres
-
-6. Fiender (AI)
-
-Fiendene må være synkronisert likt for alle spillere.
-
-Oppførsel:
-
-Spawning:
-
-fiender spawner utenfor spillernes synsfelt
-
-et tilfeldig punkt velges rundt en tilfeldig spiller
-
-det sjekkes at fienden ikke dukker opp rett oppå en spiller
-
-Bevegelse:
-
-fienden beveger seg mot nærmeste spiller
-
-Kamp:
-
-angriper spilleren til enten fienden dør eller spilleren dør
-
-Alt dette skal vises likt hos alle klienter i flerspilleren.
-
-7. Flerspiller og lobby
-
-Før spillet starter kommer spilleren til en lobby.
-
-Funksjonen til lobbyen:
-
-Opprette rom / spill
-
-spilleren trykker på en knapp for å lage et nytt rom
-
-rommet får automatisk en unik, tilfeldig ID
-
-Bli med i rom
-
-spilleren skriver inn rom-ID og kobler seg til et eksisterende spill
-
-Brukergrensesnittet i lobbyen lages i Unity, og knappene kaller Photon-funksjoner for å opprette og bli med i rom.
-
-Regel i spillet:
-Hvis en spiller dør i løpet av en runde, sendes han/hun tilbake til lobbyen, og kan ikke gå inn i det samme rommet igjen.
-
-8. Visuell stil
-
-Enkel og oversiktlig stil, for å spare tid på grafikk
-
-To muligheter:
-
-2D top-down-spriter
-
-eller enkel 3D med kamera ovenfra
-
-Viktig at man lett skiller:
-
-spillere
-
-fiender
-
-prosjektiler
-
-dropp (krystaller og potions)
-
-9. Omfang og prioritering
-Minimumsversjon (MVP)
-
-Dette er det jeg prioriterer å få ferdig:
-
-Én arena / ett kart
+Status / MVP:
+Alt som er implementert:
 
 Bevegelse og automatisk angrep for spillfiguren
 
-Fiender som spawner, går mot spilleren og gjør skade
+Fiender som spawner, går mot spiller og gjør skade
 
-Dropp av erfaringskrystaller og helsedrikker
+Dropp av erfaringskrystaller
 
-Nivåsystem med valg av én oppgradering
+HP- og erfaringsbar i UI
 
-HP-bar og erfaringsbar
+System for død av spiller og fiender
 
-Lobby der man kan lage rom og koble seg til med rom-ID
-
-Synkronisering av spillere og fiender over nett (Photon Fusion + ECS)
-
-Ekstra hvis det blir tid
-
-Flere typer fiender
-
-Flere typer våpen og oppgraderinger
-
-Visuelle effekter (partikler, lysglimt, enkle animasjoner)
-
-Lyd og musikk
+Kamp- og erfaringssystem via DOTS
